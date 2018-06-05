@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body onload="checkCookie()">
+	</body>
+	
+	<script>
+		function checkCookie(){
+			//navigator这是一个浏览器对象，会返回当前浏览器的版本，是否启用cookie等信息,platform:操作系统名
+			if(navigator.cookieEnabled){
+				alert('your explorer cookie is enable'+';'+navigator.platform);
+			}else{
+				alert('your explorer cookie is unenable');
+			}
+		}
+	</script>
+</html>

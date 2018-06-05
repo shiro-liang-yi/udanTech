@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../public/stylesheets/index.css">
+
+		<style type="text/css">
+			.el-col {
+				border-radius: 4px;
+			}
+			
+			.bg-purple-dark {
+				background: #99a9bf;
+			}
+			
+			.bg-purple {
+				background: #d3dce6;
+			}
+			
+			.bg-purple-light {
+				background: #e5e9f2;
+			}
+			
+			.grid-content {
+				border-radius: 4px;
+				min-height: 36px;
+			}
+			
+			.demo-block {
+				margin-top: 2px;
+				border: 1px solid #cdd2d2;
+				border-radius: 4px;
+				transition: .2s;
+				background-color: #f4f4f4;
+				color: #555555;
+			}
+			
+			.opt_steps_on {
+				color: #555555;
+			}
+			
+			.opt_steps_out {
+				color: #dddddd;
+			}
+			
+			.dark-blue {
+				background: #20A0FF;
+			}
+			
+			.light-blue {
+				background: #1D8CE0;
+			}
+			
+			.el-step__head.is-text.is-process {
+				color: #fff;
+				background-color: #008000;
+				border-color: #008000;
+			}
+			
+			.el-loading-mask_init {
+				position: absolute;
+				z-index: 10000;
+				background-color: rgba(255, 255, 255, .9);
+				margin: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				transition: opacity .3s;
+			}
+			
+			.el-loading-spinner_init {
+				top: 50%;
+				margin-top: -21px;
+				width: 100%;
+				text-align: center;
+				position: absolute;
+			}
+			
+			.el-loading-spinner_init .circular_init {
+				width: 42px;
+				height: 42px;
+				animation: loading-rotate 2s linear infinite;
+			}
+			
+			.el-loading-spinner_init .path_init {
+				animation: loading-dash 1.5s ease-in-out infinite;
+				stroke-dasharray: 90, 150;
+				stroke-dashoffset: 0;
+				stroke-width: 2;
+				stroke: #20a0ff;
+				stroke-linecap: round;
+			}
+			
+			.el-loading-spinner_init .el-loading-text_init {
+				color: #20a0ff;
+				margin: 3px 0;
+				font-size: 14px;
+			}
+			
+			.el-table th {
+				text-align: center;
+			}
+			
+			.el-table .cell {
+				text-align: center;
+			}
+			
+			.el-message {
+				min-width: 150px;
+				left: 170px;
+			}
+			
+			[v-cloak] {
+				display: none !important;
+			}
+		</style>
+
+		<!-- 先引入 Vue -->
+		<script src="../node_modules/vue/dist/vue.js"></script>
+		<!-- 引入组件库 -->
+		<script src="../node_modules/element-ui/lib/index.js"></script>
+		<!-- AJAX -->
+		<script src="../node_modules/axios/dist/axios.js"></script>
+		<script src="../node_modules/lodash/lodash.js"></script>
+
+		<title>包装扫码工具</title>
+	</head>
+
+	<body style="background-color: #f4f4f4; padding: 2px;">
+		<div class="el-loading-mask_init">
+			<div class="el-loading-spinner_init">
+				<svg viewBox="25 25 50 50" class="circular_init">
+					<circle cx="50" cy="50" r="20" fill="none" class="path_init"></circle>
+				</svg>
+				<p class="el-loading-text_init">加载中...</p>
+			</div>
+		</div>
+
+		<div id="wrapScan" style="border: 1px solid #eea236 ; padding: 6px; border-radius: 4px; height:490px; " v-loading="submitLoading" element-loading-text="数据上报中...">
+
+			<el-form :module="modelForm" :rules="modelFormRules" ref="modelForm" style="padding-top: 15px;" label-width="100px">
+				<el-form-item label="订单编号" prop="orderId">
+					<el-input style="width: 220px;" v-model="modelForm.orderId" @keyup.enter.native="getOrderId('orderId')" id="orderId" onfocus=true></el-input>
+					<el-input style="width: 500px;" v-model="modelForm.orderId_show" v-bind:style="{display:modelForm.is_show}"></el-input>
+				</el-form-item>
+				<!--放置一个隐藏表单项，存放订单编号响应信息中的orderId字段，用于后面的操作使用-->
+				<el-form-item prop="od" v-show="false">
+					<el-input v-model="modelForm.od" id="od" type="hidden"></el-input>
+				</el-form-item>
+				<el-form-item label="包装条码" prop="packageSn">
+					<el-input style="width: 220px;" v-model="modelForm.packageSn" @keyup.enter.native="getPack('packageSn')"></el-input>
+				</el-form-item>
+				<el-form-item label="产品条码" prop="lists">
+					<el-input style="width: 220px;" v-model="modelForm.lists" @keyup.enter.native="getProd('lists')"></el-input>
+				</el-form-item>
+			</el-form>
+
+			<el-row :gutter="0" style="font-family: Consolas; font-size: 20px;">产品列表</el-row>
+			</br>
+			<el-row :gutter="0" class="grid-content bg-purple-light" style="height: 200px; background-color: #ffffff;" id="tableId">
+				<template>
+					<el-table ref="singleTable" :data="scanData" highlightCurrentRow="border" height="200" border>
+						<el-table-column prop="index_num" label="序号" width="150"></el-table-column>
+						<el-table-column prop="product_model" label="产品型号" width="150"></el-table-column>
+						<el-table-column prop="lists" label="产品条码" width="150"></el-table-column>
+						<el-table-column label="操作" width="*">
+							<template scope="scope">
+								<el-button size="small" type="danger" @click="handleDelete(scope.$index,scope.row)">删除
+								</el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+				</template>
+			</el-row>
+
+			<el-row :gutter="0" class="grid-content bg-purple-light" style="background-color: #ffffff; text-align: center;">
+				<el-col :sm="3" style="height: 60px; line-height: 60px;">已扫码:{{submitArr.length}}</el-col>
+				<el-col :sm="18">
+					<el-button type="primary" size="large" @click="modelFormSubmit('modelForm')" style="margin: 6px 30px 15px 0;">提交
+					</el-button>
+					<el-button @click="resetModelForm('modelForm')">重置</el-button>
+				</el-col>
+				<el-col :sm="3">&nbsp;</el-col>
+			</el-row>
+
+			<el-dialog title="用户登录" v-model="loginForm.modelShow" size="small" top="28%" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="loginForm.modelShow">
+				<el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="100px">
+					<el-form-item label="帐    号" prop="userName">
+						<el-input style="width: 220px;" v-model="loginForm.userName" :autofocus="true" auto-complete="off" @keyup.enter.native="loginFormSubmit('loginForm')"></el-input>
+					</el-form-item>
+					<el-form-item label="密    码" prop="userPwd">
+						<el-input style="width: 220px;" v-model="loginForm.userPwd" type="password" auto-complete="off" @keyup.enter.native="loginFormSubmit('loginForm')"></el-input>
+					</el-form-item>
+				</el-form>
+				<div slot="footer" class="dialog-footer">
+					<el-button type="primary" @click="loginFormSubmit('loginForm')" :disabled="loginForm.isDisabled">{{ loginForm.buttonText }}
+					</el-button>
+				</div>
+			</el-dialog>
+
+		</div>
+
+		<script>
+			var vue = new Vue({
+				el: '#wrapScan',
+				data: function() {
+					var validateOrderId = (rule, value, callback) => {
+						var valueStr = this.modelForm.orderId;
+						if(valueStr === '') {
+							return callback(new Error('请输入订单编号'));
+						} else if(valueStr.length < 3) {
+							return callback(new Error('输入的订单编号不正确'));
+						} else {
+							return callback();
+						}
+					};
+					var validatePackageSn = (rule, value, callback) => {
+						var valueStr = this.modelForm.packageSn;
+						if(valueStr === '') {
+							return callback(new Error('请输入包装条码'));
+						} else {
+							return callback();
+						}
+					};
+					var validateLists = (rule, value, callback) => {
+						var valueStr = this.modelForm.lists;
+						if(valueStr === '') {
+							return callback(new Error('请输入产品条码'));
+						} else if(valueStr.length < 3) {
+							return callback(new Error('产品条码输入不正确'));
+						} else {
+							return callback();
+						}
+					};
+					return {
+						initUrl: 'http://10.0.0.230:8080/udandtu-web-admin/',
+						//表单校验规则
+						modelFormRules: {
+							orderId: [{
+								validator: validateOrderId,
+								trigger: 'blur'
+							}],
+							packageSn: [{
+								validator: validatePackageSn,
+								trigger: 'blur'
+							}],
+							lists: [{
+								validator: validateLists,
+								trigger: 'blur'
+							}]
+						},
+						modelForm: {
+							orderId: '',
+							packageSn: '',
+							lists: '',
+							od: '',
+							orderId_show: '',
+							is_show: 'none'
+						},
+						//登录校验
+						loginRules: {
+							userName: [{
+								required: true,
+								message: '请输入帐号',
+								trigger: 'blur'
+							}],
+							userPwd: [{
+								required: true,
+								message: '请输入密码',
+								trigger: 'blur'
+							}]
+						},
+						loginForm: {
+							userName: '',
+							userPwd: '',
+							tokenId: '',
+							userId: '',
+							deviceId: '',
+							loginType: '',
+							clientCode: '',
+							clientVersion: '',
+							modelShow: true,
+							isDisabled: false,
+							buttonText: "确 定"
+						},
+						listsArray: [],
+						tableData: [],
+						submitLoading: false,
+						submitArr: [],
+						/*dialogFormVisible:false,*/
+					}
+				},
+				computed: {
+					scanData: function() {
+						var dataArr = this.tableData;
+						var newArr = [];
+						var len = dataArr.length;
+						if(len > 0) {
+							for(var i = 0; i < len; i++) {
+								//根据lists检查重复
+								newArr.push({
+									//                            index_num: len - i,
+									index_num: i,
+									lists: dataArr[i]['lists'],
+									product_model: dataArr[i]['product_model']
+								});
+							}
+							return newArr;
+						}
+						return [];
+					}
+				},
+				watch: {},
+				methods: {
+					initMac: function() {
+						var _self = this;
+						require('getmac').getMac(function(err, macAddress) {
+							if(err) throw err
+							_self.loginForm.deviceId = macAddress;
+						});
+						document.getElementsByClassName('el-loading-mask_init')[0].style.display = 'none';
+					},
+					//查询订单编号是否存在
+					getOrderId: function(arg) {
+						var _self = this;
+						axios({
+							url: this.initUrl + 'client/findOrderInfo',
+							method: 'post',
+							params: {
+								orderNo: _self.modelForm.orderId,
+								userId: _self.loginForm.userId,
+								deviceId: _self.loginForm.deviceId,
+								tokenId: _self.loginForm.tokenId
+							},
+							timeout: 20000
+						}).then(function(response) {
+							var rsObj = response.data;
+							if(rsObj.rscode > 0) {
+								//需要返回nameZh,projectNo,orderNo(这个是输入的订单编号),projectName
+								var a = JSON.stringify(rsObj.rsmsg.project.projectNo);
+								var b = JSON.stringify(rsObj.rsmsg.project.custom.nameZh);
+								var c = JSON.stringify(rsObj.rsmsg.project.projectName);
+								od = JSON.stringify(rsObj.rsmsg.id);
+								_self.modelForm.od = od;
+								_self.modelForm.orderId_show = b.substring(1, b.length - 1) + "  " + a.substring(1, a.length - 1) + "  " + c.substring(1, c.length - 1);
+								_self.modelForm.is_show = 'block'; //这种方式达不到要求（显示在一行）
+							} else {
+								alert(rsObj.rsmsg);
+							}
+							//将焦点聚焦到包装条码
+							var dom = document.getElementsByClassName('el-input__inner');
+							dom[3].focus();
+						}).catch(function(error) {
+							alert(error);
+						});
+					},
+					//查询包装条码函数（目前不要求）
+					getPack: function() {
+						var _self = this;
+						if(_self.modelForm.packageSn == '') {
+							alert("请输入包装条码");
+						} else {
+							//显示产品条码项
+						}
+						//将焦点聚焦到产品条码
+						var dom = document.getElementsByClassName('el-input__inner');
+						dom[4].focus();
+					},
+					//查询产品条码是否存在
+					getProd: function(arg) {
+						var arrData = this.tableData;
+						var _self = this;
+						if(_self.modelForm.od != '' && _self.modelForm.od != undefined) {
+							//如果列表中已有数据，则进行输入排重
+							if(arrData.length !== 0) {
+								//将列表中的每一项数据的产品条码与其进行比较
+								var exitsLists = '';
+								var inputLists = _self.modelForm.lists;
+								var flag;
+								for(var i = 0; i < arrData.length; i++) {
+									exitsLists = arrData[i].lists;
+									if(exitsLists == inputLists) {
+										alert("产品条码输入重复，请重新输入");
+										flag = false;
+										return false;
+									} else {
+										flag = true;
+									}
+								}
+								if(flag) {
+									axios({
+										url: this.initUrl + 'client/checkScanSn',
+										method: 'post',
+										params: {
+											snCode: _self.modelForm.lists,
+											orderId: _self.modelForm.od,
+											userId: _self.loginForm.userId,
+											deviceId: _self.loginForm.deviceId,
+											tokenId: _self.loginForm.tokenId
+										},
+										timeout: 20000
+									}).then(function(response) {
+										var rsObj = response.data;
+										if(rsObj.rscode > 0) {
+											var listStr = _self.modelForm.lists;
+											var product_model = rsObj.rsmsg.object_type;
+											//                                        _self.tableData.unshift({lists: listStr, product_model: product_model});
+											_self.tableData.push({
+												lists: listStr,
+												product_model: product_model
+											});
+											//填入下面的table中之后，清空产品条码输入框
+											_self.modelForm.lists = '';
+										} else {
+											alert(rsObj.rscode + ' : ' + rsObj.rsmsg);
+										}
+									}).catch(function(error) {
+										alert(error);
+									});
+								}
+							} else {
+								//列表中没有数据，正常提交
+								axios({
+									url: this.initUrl + 'client/checkScanSn',
+									method: 'post',
+									params: {
+										snCode: _self.modelForm.lists,
+										orderId: _self.modelForm.od,
+										userId: _self.loginForm.userId,
+										deviceId: _self.loginForm.deviceId,
+										tokenId: _self.loginForm.tokenId
+									},
+									timeout: 20000
+								}).then(function(response) {
+									var rsObj = response.data;
+									if(rsObj.rscode > 0) {
+										var listStr = _self.modelForm.lists;
+										var product_model = rsObj.rsmsg.object_type;
+										if(listStr != '') {
+											//判断是否重复
+											var checkData = false;
+											for(var i = 0; i < arrData.length; i++) {
+												var obj = arrData[i];
+												if(listStr == obj['lists']) {
+													checkData = true;
+													break;
+												}
+											}
+											if(checkData) {
+												_self.openMsg('error', '产品条码重复', '');
+											} else {
+												//                                        _self.tableData.unshift({lists: listStr, product_model: product_model});
+												_self.tableData.push({
+													lists: listStr,
+													product_model: product_model
+												});
+											}
+										}
+										//填入下面的table中之后，清空产品条码输入框
+										_self.modelForm.lists = '';
+									} else {
+										alert(rsObj.rscode + ' : ' + rsObj.rsmsg);
+									}
+								}).catch(function(error) {
+									alert(error);
+								});
+							}
+						} else {
+							alert("订单编号输入有误,请重新输入");
+							return false;
+						}
+					},
+					loginFormSubmit: function(formName) {
+						var checkData = false;
+						this.$refs[formName].validate((valid) => {
+							if(valid) {
+								checkData = true;
+							} else {
+								return;
+							}
+						});
+						if(checkData) {
+							var _dom = document.getElementsByClassName('el-input__inner');
+							var _self = this;
+							//从package.json中读取固定版本等的信息
+							var pjs = require('../package.json');
+							_self.loginForm.buttonText = '提交中...';
+							_self.loginForm.isDisabled = true;
+							axios({
+								url: this.initUrl + 'client/login_client',
+								method: 'post',
+								params: {
+									rm: new Date().getTime(),
+									loginName: _self.loginForm.userName,
+									loginPwd: _self.loginForm.userPwd,
+									loginType: pjs.config.loginType,
+									deviceId: _self.loginForm.deviceId,
+									clientCode: pjs.config.clientCode,
+									clientVersion: pjs.config.version
+								},
+								timeout: 20000
+							}).then(function(response) {
+								var rsObj = response.data;
+
+								if(rsObj.rscode > 0) {
+									_self.loginForm.tokenId = rsObj.rsmsg.tokenId;
+
+									_self.loginForm.userId = rsObj.rsmsg.id;
+
+									_self.loginForm.modelShow = false;
+
+									//跳转到扫码
+									_dom[0].focus();
+									_self.loginForm.userPwd = '';
+								} else {
+									_self.loginForm.buttonText = '确定';
+									_self.loginForm.isDisabled = false;
+									alert(rsObj.rsmsg);
+								}
+							}).catch(function(error) {
+								_self.loginForm.buttonText = '确定';
+								_self.loginForm.disable = false;
+								alert(error);
+							});
+						}
+					},
+					handleDelete: function(index, rowData) {
+						this.tableData.splice(index, 1);
+					},
+					modelFormSubmit: function(formName) {
+						var _self = this;
+						listsArray = [];
+						var arr = _self.tableData;
+						var _dom = document.getElementsByClassName('el-input__inner');
+						for(var i = 0; i < arr.length; i++) {
+							var obj = arr[i];
+							listsArray.push(obj['lists']);
+						}
+						_self.submitLoading = true;
+						//lists参数要求是一个数组
+						if(!(arr.length == 0)) {
+							axios({
+								url: this.initUrl + 'client/savePackageScan',
+								method: 'POST',
+								data: {
+									rm: new Date().getTime(),
+									orderId: _self.modelForm.od,
+									userId: _self.loginForm.userId,
+									packageSn: _self.modelForm.packageSn,
+									deviceId: _self.loginForm.deviceId,
+									tokenId: _self.loginForm.tokenId,
+									lists: listsArray
+								},
+								timeout: 20000
+							}).then(
+								function(response) {
+									_self.submitLoading = false;
+									var rsObj = response.data;
+									if(rsObj.rscode > 0) {
+										_self.openMsg('success', '提交成功', _self.modelForm.orderId);
+										_self.resetModelForm('modelForm');
+										//焦点置于订单编号
+										_dom[0].focus();
+									} else {
+										alert(rsObj.rsmsg);
+									}
+								}
+							).catch(
+								function(error) {
+									_self.submitLoading = false;
+									_self.openMsg('error', '网络连接超时');
+									alert(error);
+								}
+							);
+						} else {
+							//当产品列表点击删除后，不给提交
+							alert("提交数据为空，请重新输入");
+							_self.submitLoading = false;
+							return false;
+						}
+					},
+					resetModelForm: function(formName) {
+						var _self = this;
+						//重置输入框，通过当前对象的form表单取属性
+						_self.modelForm.orderId = '';
+						_self.modelForm.packageSn = '';
+						_self.modelForm.lists = '';
+						_self.modelForm.is_show = 'none';
+						//重置校验信息为空
+						_self.$refs['modelForm'].clearValidate();
+						//同时还需要清空产品列表中的数据
+						_self.tableData = [];
+					},
+					openMsg: function(type, msg, lists) {
+						if(type == null || type == undefined) {
+							type = 'error';
+							msg = '操作失败';
+						}
+						if(type == 'success') {
+							//判断是否存在于已扫码中
+							if(!this.contains(this.submitArr, lists)) {
+								this.submitArr.push(lists);
+							}
+						}
+						this.$message({
+							message: msg,
+							type: type,
+							duration: 1000 //关闭时间 单位为毫秒 为0时不关闭
+						});
+					},
+					contains: function(arr, obj) {
+						var i = arr.length;
+						while(i--) {
+							if(arr[i] == obj) {
+								return true;
+							}
+						}
+						return false;
+					},
+				}
+			});
+			vue.initMac();
+		</script>
+	</body>
+
+</html>

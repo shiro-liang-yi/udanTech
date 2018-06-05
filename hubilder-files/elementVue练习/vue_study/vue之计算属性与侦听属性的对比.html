@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<div id="div">
+			{{fullName}}
+		</div>
+		<script>
+			var vue = new Vue({
+				el:'#div',
+				data:{
+					firstName:'Foo',
+					lastName:'Bar',
+					//fullName:'Foo Bar'
+				},
+				computed:{
+					//也可以不使用watch侦听器,使用计算属性
+					fullName:{
+						//你可以对fullName添加set方法，默认只有get方法
+						get: function(){
+							return this.firstName + '   ' + this.lastName;
+						},
+						set: function(val){
+							var fu = val.split('');
+							this.firstName = fu[0];
+							this.lastName = fu[fu.length-1];
+						}
+					}
+				},
+				watch:{
+//					firstName: function(val){
+//						this.fullName = val + '  ' + this.lastName;
+//					},
+//					lastName: function(val){
+//						this.fullName = val + '  ' + this.firstName;
+//					}
+				},
+				methods:{}
+			});
+		</script>
+	</body>
+</html>

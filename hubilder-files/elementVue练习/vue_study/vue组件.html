@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<!--在引用todo-item组件的地方，就会自动插入todo-item组件的template模板-->
+		<div id="div">
+			<ol>
+				<todo-item style="width:150px;"></todo-item>
+				<todo-item style="width:150px;"></todo-item>
+				<todo-item style="width:150px;"></todo-item>
+			</ol>
+		</div>
+		<script>
+			Vue.component('todo-item',
+				{
+					template:'<select><option>1</option><option>2</option></select>'
+				}
+			);
+			var vue = new Vue({
+				el:'#div',
+				data:{}
+			});
+		</script>
+	</body>
+</html>

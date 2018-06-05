@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+		<style>
+			.myclass{color: #000000;}
+		</style>
+	</head>
+	<body>
+		<div id="div" class="myclass" v-bind:class="{active:tag}" style="width: 150px;height: 150px;">
+			
+		</div>
+		<script>
+			var vue = new Vue({
+				el:'#div',
+				data:{
+					tag: false
+				}
+			});
+		</script>
+	</body>
+</html>

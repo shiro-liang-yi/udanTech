@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="div1" style="height: 200px; width: 200px; overflow: auto;background-color: bisque;">
+			<div id="div2" style="height: 300px; width: 150px;">
+				<p>点击来学习scrollTop</p>
+			</div>
+		</div>
+		<p><button id="btn1" type="button" onclick="div1.scrollTop=10">设置scrollTop值为10</button>
+		<button id="btn2" type="button" onclick="div1.scrollTop=50">设置scrollTop值为50</button></p>
+		<p>请输入要设置的scrollTop的值: <input type="text" id="inp"/>
+		<input type="button" value="确定" onclick="set_scrollTop();"/></p>
+		<p>scrollTop的实时值: <span id="span1"></span></p>
+		
+		<script type="application/javascript">
+			var div1 = document.getElementById('div1');
+			var div2 = document.getElementById('div2');
+			var span1 = document.getElementById('span1');
+			//将scrollTop值实时显示
+			div1.onscroll = function(){
+				span1.innerHTML = div1.scrollTop;
+			}
+			
+			function set_scrollTop(){
+				if(document.getElementById('inp').value != '')
+				div1.scrollTop= document.getElementById('inp').value;
+				else
+				alert('请输入一个值');
+				return false;
+			}
+			
+		</script>
+	</body>
+</html>

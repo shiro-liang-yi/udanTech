@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="out" style="height: 300px;width: 300px; background-color: #000000; overflow: auto;">
+			<div id="inner" style="height: 400px; width: 250px; background-color: coral;">
+				<p>春眠不觉晓</p>
+				<p>处处闻啼鸟</p>
+				<p>夜来风雨声</p>
+				<p>花落知多少</p>
+			</div>
+		</div>
+		<p>scrollTop的值是: <span id="scp"></span></p>
+		
+		<script>
+			var out = document.getElementById('out');
+			var scp = document.getElementById('scp');
+			out.onscroll = readScp;
+			function readScp(){
+				scp.innerHTML = out.scrollTop;
+			}
+		</script>		
+	</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<!--  v-on指令添加一个事件监听器，通过它调用在vue实例中定义的方法,(v-on中的‘v’表示vue框架的特性,而on和后面的属性都是html标签中的属性;
+			这里就是通过 v 把 on-click 与vue实例中定义的方法绑定起来了
+		)   -->
+		<div id="div">
+			<p>{{message}}</p>
+			 请输入: <input value="" placeholder="hello world !" />
+			<button type="button" v-on:click="reverse_self">逆转消息</button>
+		</div>
+		<script>
+			//这种将输入与应用状态之间的绑定是通过手动实现的 ，很麻烦，但是我们通过v-model指令就可以轻松实现目前的这种效果
+			var vue = new Vue({
+				el:'#div',
+				data:{
+					message:'hello world !'
+				},
+				watch:{},
+				template:'',
+				computed:{},
+				methods:{
+					reverse_self : function(){
+						var _self = this;
+						var inp = document.getElementsByTagName('input')[0];
+						var inp_val = inp.value.split('').reverse().join('');
+						_self.message = inp_val;
+						inp.value = inp_val;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

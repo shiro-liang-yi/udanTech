@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<!--
+			首先明白：若是向html dom中添加新元素，你必须首先创建该元素(元素节点)，然后再向一个已存在的元素追加该元素
+        -->
+        <div id="div1">
+        	<p id="p1">111</p>
+			<p id="p2">222</p>
+			<p id="p3">333</p>
+        </div>
+        
+        <script>
+        	//操作步骤：1.先创建一个新的元素
+        	var cp = document.createElement('p');
+        	//2.然后由domcument创建一个文本节点(如果需要在这个元素中添加文本的话,这一步就是必须的)
+        	var cpNode = document.createTextNode('这是一个文本的节点');
+        	//3.然后向你创建的元素追加这个文本节点
+        	cp.appendChild(cpNode);
+        	
+        	//4.最后，必须向一个已有的元素追加这个新元素
+        	document.getElementById('div1').appendChild(cp);
+        </script>
+       <!-- <script>
+        	//删除节点的话，只能从一个 父节点中删除子节点
+        	document.getElementById('div1').removeChild(document.getElementById('p1'));
+        </script>-->
+	</body>
+</html>

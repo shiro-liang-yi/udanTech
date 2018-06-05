@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<style>
+			.myClass{margin: 0px; padding: 40px; color: #66B1FF; cursor: auto; align-content: center;}
+		</style>
+		<title></title>
+	</head>
+	<body>
+		<div id='app'>
+			<ul>
+				<li v-for="todo in todos">{{todo.text}}&nbsp;&nbsp;&nbsp;&nbsp;{{todo.value}}</li>
+			</ul>
+		</div>	
+		<script>
+			var app = new Vue({
+				el:'#app',
+				data:{
+					todos:[
+						{text:'a',value:1},
+						{text:'b',value:2},
+						{text:'c',value:3}
+					]
+				}
+			});
+			//如果想在其下面再添加一行数据
+			app.todos.push({text:'d',value:4});
+		</script>
+	</body>
+</html>

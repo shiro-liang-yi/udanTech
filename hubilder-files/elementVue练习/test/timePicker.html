@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/index.css" />
+		<script src="../js/vue/dist/vue.js"></script>
+		<script src="../js/element-ui@2.3.7/lib/index.js"></script>
+
+		<!--<script src="//unpkg.com/vue/dist/vue.js"></script>
+		<script src="//unpkg.com/element-ui@2.3.7/lib/index.js"></script>-->
+	</head>
+
+	<body>
+		<div id="app">
+			<template>
+				<el-time-picker v-model="value2" :picker-options="{
+      selectableRange: '18:30:00 - 20:30:00'
+    }" placeholder="任意时间点">
+				</el-time-picker>
+				<el-time-picker arrow-control v-model="value3" :picker-options="{
+      selectableRange: '18:30:00 - 20:30:00'
+    }" placeholder="任意时间点">
+				</el-time-picker>
+			</template>
+		</div>
+		<script>
+			var Main = {
+				data(){
+					return {
+						value2:new Date(2016, 9, 10, 18, 40),
+						value3:new Date(2016, 9, 10, 18, 40)
+					}
+				}
+			};
+			var Ctor = Vue.extend(Main);
+			new Ctor().$emit('#app');
+		</script>
+	</body>
+
+</html>

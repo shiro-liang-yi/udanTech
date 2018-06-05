@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>小子
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>		
+		<title></title>
+	</head>
+	<body>
+		<div id="div">
+			<a v-on:show="mycolor">小子</a>
+		</div>
+		<script>
+			var vm = new Vue({
+				el:'#div',
+				data:{},
+				methods:{
+					mycolor : function(){
+						var _self = this;
+						var a = document.getElementsByTagName('a')[0];
+						a.setAttribute('width','100px');
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

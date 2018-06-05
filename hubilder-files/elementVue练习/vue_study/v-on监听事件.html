@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<div id="div">
+			<button v-on:click="counter+=1">button</button>
+			<p>you have clicked the button {{counter}} times.</p>
+		</div>
+		<script>
+			var vue = new Vue({
+				el:'#div',
+				data:{
+					counter:0
+				}
+			});
+		</script>
+	</body>
+</html>

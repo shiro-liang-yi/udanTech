@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<!--<style>
+			*{
+				background: #20A0FF;
+			}
+		</style>-->
+		<!--这里引用我单独写的外部css样式-->
+		<link rel="stylesheet" href="../css/my-class.css" />
+		<title></title>
+	</head>
+	<body>
+		<div id="div" class="my-class">
+			<input v-model="message" style="color: #fff000; font-size: 16px; width: 300px;text-align: center;"/>
+		</div>
+		<script>
+			//这是一种表单模型绑定数据
+			var vue = new Vue({
+				el:'#div',
+				data:{
+					message:'hello-message'
+				},
+				methods:{},
+				watch:{},
+				template:'',
+				computed:{}
+			});
+		</script>
+	</body>
+</html>

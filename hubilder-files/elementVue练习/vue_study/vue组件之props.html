@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+
+	<body>
+		<!--
+        	作者：1922519995@qq.com
+        	时间：2018-05-14
+        	描述：在vue中，一个组件本质上是一个被预先定义选项的Vue实例
+        -->
+		<div id="div">
+			<ol>
+				<app  v-bind:a="item" v-for="item in categoryList">{{item.text}}</app>
+				<app  v-bind:a="item" v-for="item in goods">{{item.name}}</app>
+			</ol>
+		</div>
+		<script>
+			Vue.component('app', {
+				props: ['a'],
+				template: '<li>{{a.text}}{{a.name}}</li>'
+			});
+			var vue = new Vue({
+				el: '#div',
+				data: {
+					categoryList: [{
+						id: 0,
+						text: 'aaa'
+					}, {
+						id: 1,
+						text: 'bbb'
+					}, {
+						id: 2,
+						text: 'ccc'
+					}],
+					goods:[{name:'tom',age:'21'}]
+				}
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app1">
+			<h3 id="example_title">将滚动条（scrollbar）保持在最底部的方法</h3>
+			<div>
+			<span>演示滚动条始终定位到底端</span>
+			<div id="app2" style="overflow:auto; height: 100px; width: 400px; border: 1px solid #999; background-color: darkgray;">
+			</div>
+			<input type="button" value="点击插入一行文字" onclick="add()" />
+			</div>
+		</div>
+		
+		<script>
+			function add(){
+				var div = document.getElementById('app2');
+				//注意，div中的html在innerHtml元素中，每次都是在先前的innerHtml基础上追加
+				div.innerHTML = div.innerHTML + 'time= '+new Date().toLocaleString()+'<br/>';
+				div.scrollTop = div.scrollHeight;
+			};
+		</script>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<div id="div" v-bind:style="color:myColor,font:myFont + 'px'">
+			
+		</div>
+		<script>
+			var vue = new Vue({
+				el:'#div',
+				data:{
+					myColor:'red',
+					myFont:'30'
+				}
+			});
+		</script>
+	</body>
+</html>

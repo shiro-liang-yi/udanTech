@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			/*.my-class{
+				margin: auto;
+				padding-left: 100px;
+				padding-top: 100px;
+			}*/
+			*{
+				background-image: url(../img/snow.jpg), none;
+				font: "微软雅黑";
+				font-size: 16px;
+				/*margin: 0px;*/
+				/*padding: 0px;*/
+			}
+		</style>
+		<title></title>
+	</head>
+	<body>
+		<div id='div' class="my-class">
+			请输入字母: <input type="text" onchange="toUpper()" value=""/>
+		</div>
+		
+		<script>
+			function toUpper(){
+				var inp = document.getElementsByTagName('input')[0];
+				var inp_VAL = inp.value.toUpperCase();
+				inp.value = inp_VAL;
+				return ;
+			};
+		</script>
+	</body>
+</html>

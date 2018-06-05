@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<style>
+			.myClass{margin: 0px; padding: 40px; color: #66B1FF; cursor: auto; align-content: center;}
+		</style>
+		<title></title>
+	</head>
+	<body>
+		<div id="vif">
+			<p v-if="isShow">现在可以看见我了</p>
+		</div>
+		<script>
+			var vif = new Vue({
+				el:'#vif',
+				data:{isShow:true}
+			});
+			vif.isShow = false;
+		</script>
+		
+	</body>
+</html>

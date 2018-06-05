@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<!--<div id="app">
+			<p>用户输入:{{p}}</p>
+			<button id="btn" v-on:click="revert">逆转信息</button>
+		</div>
+		<script>
+			var vue = new Vue({
+				el:'#app',
+				data:{
+					p:'hello world'
+				},
+				methods:{
+					revert: function(){
+						//这里是因为js中的reverse()方法操作对象只能是数组，因而必须要先转为数组再进行操作
+						this.p = this.p.split('').reverse().join('');
+					}
+				}
+			});
+		</script>-->
+		
+		<div id="inp">
+			<p>{{inp}}</p>
+			<input type="text" v-model="inp" v-on:change="showVal"/>
+			<p>这里显示你输入的值是:<span id="span"></span></p>
+		</div>
+		<!--这是一个双向的绑定,即在需要显示inp值的地方能够获取它的初始值,同时输入框也能够改变他的值,实际上是一个三者之间的绑定-->
+		<script>
+			var vue = new Vue({
+				el:'#inp',
+				data:{
+					inp:'Vue'
+				},
+				methods:{
+					showVal : function(){
+						document.getElementById('span').innerHTML = this.inp;
+						//document.getElementById('span').childNodes = this.inp;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

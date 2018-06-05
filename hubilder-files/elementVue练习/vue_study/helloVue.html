@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<style>
+			.myClass{margin: 0px; padding: 40px; color: #66B1FF; cursor: auto; align-content: center;}
+		</style>
+		<title></title>
+	</head>
+	<body>
+		<!--<div id="helloVue">{{message}}</div>
+		<script>
+			new Vue({
+				el:'#helloVue',
+				data:{message:new Date().toLocaleString()}
+			});
+		</script>-->
+		
+		<div id='helloVue2'>
+<!--			<span v-bind:title="message">
+				鼠标放在这里查看时间
+			</span>-->
+			<input type="button" value="btn" v-bind:title="message"/>
+		</div>
+		<script>
+			var Main = new Vue({
+				el:'#helloVue2',
+				data:{message:'本地时间: '+new Date().toLocaleString()}
+			});
+		</script>
+		
+	</body>
+</html>

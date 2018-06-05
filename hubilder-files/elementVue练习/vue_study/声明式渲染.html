@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		
+		<title></title>
+		
+	</head>
+	<body>
+		<span id="span" v-bind:title="time">鼠标悬停显示时间</span>
+		
+		<script>
+			var vue = new Vue({
+				el:'#span',
+				data:{
+					time:new Date().toLocaleString()
+				}
+			});
+		</script>
+	</body>
+</html>

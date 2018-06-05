@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<div id="div">
+			<span id="p">
+				<p>原始信息: {{Msg}}</p>
+				<p>反转信息: {{reMsg}}</p>
+			</span>
+		</div>
+		<script>
+			var vm = new Vue({
+				el:'#div',
+				data:{
+					Msg:'我是谁'
+				},
+				computed:{
+					//计算属性不需要去监听某一个对象，而是相当于计算某一个变量的值
+					//watch等监听属性就需要去监听一个对象
+					//这个是计算属性的getter方法
+					reMsg: function(){
+						var _self = this;
+						return _self.Msg.split('').reverse().join('');
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="../js/vue/dist/vue.js"></script>
+		<style>
+			.myClass{margin: 0px; padding: 40px; color: #66B1FF; cursor: auto; align-content: center;}
+		</style>
+		<title></title>
+	</head>
+	<body>
+		<div id='app'>
+			<ul>
+				<li v-for="(todo,index) in todos">{{todo.text}}-{{index}}</li>
+			</ul>
+		</div>	
+		<script>
+			var app = new Vue({
+				el:'#app',
+				data:{
+					todos:[
+						{text:'a'},
+						{text:'b'},
+						{text:'c'}
+					]
+				}
+			});
+			//v-for花支持一个可选的第二个参数为当前项的索引
+		</script>
+	</body>
+</html>
