@@ -1,0 +1,303 @@
+					linux学习
+1. linuxxitong只是一个统称，他有许多版本，诸如redhat，红旗（国产）
+2. linux命令
+	【在linux中切记一点：/ 代表根目录，一定要记得】
+   cd  切换目录
+   startx  启动linux图形化界面
+   shutdown -h now 立刻进行关机
+   shutdown -r now 现在重新启动计算机
+   reboot   现在重新启动计算机
+   ls 会显示当前目录下的所有文件和文件夹【注意是当前目录下的】
+   ls -l 会显示详细信息，日期，大小【注意是小写的L】，显示长列表格式
+   ls -a 显示隐藏文件
+   mkdir 【建立目录】
+   rmdir 【删除空目录】
+
+3. 登陆时尽量少用root帐号登录，因为它是系统管理员，最大的权限，避免操作失误。
+   可以利用普通用户登录，登录后在用‘su-’命令来切换成系统管理员身份
+4. vi编辑器是linux下最有名的编辑器，也是我们学习linux必须掌握的工具，在unix下也 可以使用vi进行程序的开发。
+5. 如何使用vi进行开发？下面我们使用vi在linux下开发一个简单的java程序Hello.java ，并且在linux下运行成功
+   如何进入呢？【以编写程序hello.java为例】
+   开发步骤:1）vi Hello.java
+      	    2）输入 i 【进入插入模式】
+            3）输入 esc 【进入命令模式】
+            4）输入 : 【wq表示退出保存 q！退出不保存】
+            5）编译 Hello.java 【javac Hello.java】
+6. linux的usr文件夹（目录）是安装程序的默认安装位置，类似于windows的program  files
+7. root目录存放root用户的相关文件；mnt默认挂载光驱和软驱的目录；boot存放引导相关的文件；
+   etc存放配置相关文件；home存放普通用户的相关文件；sbin要具有一定权限  才可以使用的命令；
+   bin存放常用命令的目录
+8. pwd显示当前在哪个路径下面
+9. 【添加用户】  useradd 用户名
+   【设置密码】  passwd 用户名   【--必须写明给谁设密码；不写默认给当前用户设置】
+10. userdel 用户名 【删除用户】
+    userdel xiaoming 【删除用户xiaoming】
+    userdel -r xiaoming 【删除用户以及用户主目录】
+11. 指定运行级别
+	【0:关机】
+	【1:单用户】
+	【2:多用户状态没有网络服务】
+	【3:多用户状态有网络服务】
+	【4:系统未使用保留给用户】
+	【5:图形界面】
+	【6:系统重启】
+     常用运行级别是3和5，要修改默认的运行级别可修改文件/etc/inittab的id:5:initdefault:这一行中的数字
+12. 切换用户两种方式:1）logout；2）su
+	当是root用户向普通用户切换时不需要输入密码（好像是），直接su 用户名
+13. 解决错误配置的方法
+	在进入grub引导界面时，请输入e
+	再选中第二行，输入e
+	再最后输入 1【代表单用户级别，这儿为什么要输入1而不是3,5等；是因为linux系统只有在单用户级别时才不会去读取那个初始化配置文件（即配置那个运行级别的文件）】
+	输入1 后按enter键
+	最后再按 b 【代表以单用户模式重新启动】
+	（这也算是linux的一个漏洞吧，单用户模式会跳过那个用户验证，也可以修改root用户的密码）
+14. 后续命令：
+	mkdir aaa 【创建一个文件夹】
+	rmdir aaa 【删除一个文件夹（前提该文件夹是空的）】
+	touch aaa 【建立空文件】
+	cp 【复制命令】
+	cp -r dir1 dir2 递归复制命令（复制子目录信息）
+	mv 【移动文件和改文件名】
+	rm 【删除文件和目录】
+	rm -rf * 【删除所有内容（包括目录和文件） r递归f强制】
+	ln 【建立符号连接，是‘L’的小写，不是I】
+	ln -s 源目标
+	ln -s /etc/inittab inittab 【inittab指向实际文件/etc/inittab】
+15. 在linux和Unix系统中，|就是管道命令：怎么理解？就是把上一个命令的结果交给|后面的命令处理
+16. grep 用来在一个文件中查找特定文本的命令：如 grep "123" aaa.java 【就是在aaa.java文件中查找123】
+17. more 命令是分页
+18. man 命令相当于windows下的help，有问题用man
+19. find 命令: find / -name aaa.java 【即在根目录下面查找一个名字是aaa.java的文件】
+               find /root/ -name aaa.java 【即在根目录下面的root目录再下面，找一个aaa.java的文件】
+20. 重定向命令： 比如将上面的查找出来的文本 放入一个新的文件（如果不存在，自动创建）
+	grep -n "123" aaa.java > kkk.bak 【-n是同时显示目标所在的行数】，这样就将查找出来的记录写入kkk文件中了
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+21. 在linux中怎么安装jdk呢？？？（考虑两种linux系统版本：ubuntu和redhat）
+	在ubuntu版本系统下：普通用户新建目录没有权限，必须切换成root（或者赋予权限，这种另当别论），
+	但是切换方法是：默认安装完后系统中有root这个账号，但是密码没有，所以关键是给root赋予一个密码，
+   然后切换成这个即可了，
+	$sudo passwd root
+	[sudo] password for liangshuai:
+	Enter new UNIX password:
+	Retype new UNIX password:
+	passwd: password updated successfully
+	至此修改root用户密码完成
+	然后切换成root
+	$ su root 
+	输入密码即可了
+	如果是root用户前面是#
+	2018/4/9 10:44:15
+																	linux常用命令查看：
+一：Linux下tomcat服务的启动、关闭与错误跟踪，使用PuTTy远程连接到服务器以后，通常通过以下几种方式启动关闭tomcat服务：
+	切换到tomcat主目录下的bin目录（cd usr/local/tomcat/bin）
+	1，启动tomcat服务
+	方式一：直接启动 ./startup.sh
+	方式二：作为服务启动 nohup ./startup.sh &
+	方式三：控制台动态输出方式启动 ./catalina.sh run 动态地显示tomcat后台的控制台输出信息,Ctrl+C后退出并关闭服务
+	解释：
+	通过方式一、方式三启动的tomcat有个弊端，当客户端连接断开的时候，tomcat服务也会立即停止，通过方式二可以作为linux服务一直运行
+	通过方式一、方式二方式启动的tomcat，其日志会写到相应的日志文件中，而不能动态地查看tomcat控制台的输出信息与错误情况，通过方式三可以以控制台模式启动tomcat服务，
+	直接看到程序运行时后台的控制台输出信息，不必每次都要很麻烦的打开catalina.out日志文件进行查看，这样便于跟踪查阅后台输出信息。tomcat控制台信息包括log4j和System.out.println()等输出的信息。
+
+	2，关闭tomcat服务
+	./shutdown.sh
+
+	3，tomcat运行时jvm内存分配
+		⑴开发环境下在myeclipse中配置 
+			-Xms256m -Xmx512m -XX:NewSize=64m -XX:MaxNewSize=128m -XX:PermSize=512m -XX:MaxPermSize=512m
+		⑵，线上环境(直接通过catalina或startup命令行的方式启动)
+			①Linux下：catalina.sh
+			# OS specific support.  $var _must_ be set to either true or false.在该注释之后加下面一行
+			JAVA_OPTS="-server -Xms256m -Xmx512m -XX:NewSize=64m -XX:MaxNewSize=128m -XX:PermSize=512m -XX:MaxPermSize=512m"
+			②Windows下：cattalina.bat
+			rem Guess CATALINA_HOME if not defined 在该注释之后加下面一行
+			set JAVA_OPTS=-Xms256m -Xmx512m -XX:NewSize=64m -XX:MaxNewSize=128m -XX:PermSize=512m -XX:MaxPermSize=512m
+
+二：Linux 下的一些常用命令解释：
+	1,	pwd-->示当前的工作目录（pwd:print working directory）
+	2,	ls-->显示当前目录内容(list)
+			ls|more 分屏显示("|"为管道符，将前一个命令结果传递给后面的命令，more表示分屏)
+			ls /usr>test01/abc.txt 将指定目录的内容追加到test01目录下的abc.txt文本文档中
+			ls -l 显示长格式，简写ll，主要看文件的名，大小，权限等
+			ls -a 显示隐藏文件
+	3,	cd-->改变当前工作目录
+			cd /usr-->转到指定目录
+			cd usr-->转到指定目录的子目录
+			cd ..-->返回到上一级目录
+			cd ~ -->返回到主目录
+	4，clear--> 清屏
+	5，cat-->显示文件内容
+		 cat file|more分屏显示文件内容(先显示文件内容，再将结果内容传给后一个命令分屏)
+		 cat file|grep abc 显示包含字符abc的文件内容(先显示文件内容，再将结果内容传给后一个命令搜索，grep具有搜索功能)
+		 cat > catalina.out 清空日志内容
+	6，touch-->创建新文件
+	7，mkdir-->创建新目录
+	8，rm-->删除文件或目录
+		 rm file.txt 删除文件
+		 rm -rf test01 删除不为空的目录(参数r:递归recursion，f：强制force)
+	9，rmdir-->删除空目录
+	10， cp-->复制文件
+		   cp src.txt dest.txt
+	11，mv-->移动文件
+			mv abc.txt def.txt 改名
+			mv test01 test02 改目录名
+			mv test相当于mv t+(按Tab键),tab键有查找补充命令功能。
+	12，chmod-->改变权限模式
+			chmod +x catalina.sh 为catalina.sh加可执行的权限(参数x:执行execute)。linux下的文件是否可执行取决于文件属性，不看扩展名。
+			chmod a+r catalina.out 将文件 catalina.out 设为所有人皆可读取。(参数a:所有人all)
+			chmod ugo+r catalina.out 也是将文件 catalina.out 设为所有人皆可读取。(参数u:档案拥有者user，g:group群组，o:other其他)
+  13，vi-->Linux下的一个简单编辑器
+			vi .bash_profile 打开Linux的用户级初始文件,:wq保存退出，:q!不保存退出
+  14，tail -->显示文件尾部内容
+			tail -f ./catalina.out，#将文件最尾部内容显示在屏幕上，并不断刷新显示，按ctrl+c或delete退出。
+  15，netstat或者lsof-->查看网络端口与进程号
+			①netstat -anp|grep 8080 直接查看指定端口的进程pid
+			#结果为
+			 协议  本地地址          外部地址        状态           PID
+			 TCP   0.0.0.0:80      0.0.0.0:8080    LISTENING      5144/java
+
+			②lsof -i:8080 直接查看指定端口的进程pid
+			#结果为
+			COMMAND   PID   USER   FD   TYPE  DEVICE      SIZE NODE NAME
+			  java         5144    root   33u    IPv6   127800       TCP *:8080 (LISTEN)
+			则5144为8080这个端口的tomcat进程的pid,然后就可以kill这个进程:kill -9 5144
+			对比Windows下netstat命令：netstat -ano|findstr 8080，taskkill -f -pid 5144(f:force强制)
+  16，ping -->查看网络是连通
+		ping 127.16.8.66 查看当前机器与目录机器是否能正常通信(主要是看TCP/IP协议是否正常)
+  17，ipconfig 查看ip地址
+		ipconfig -all 可以看到各个网络适配器(本地网卡、无线网卡)的IP地址和MAC地址
+  18，ps -->查看程序活动进程
+		ps -ef |grep tomcat 查看是否已经有tomcat在运行了,如果有则将其进程杀死
+		#结果为:
+		sun 1540 1 0 10:21 pts/1 00:00:06 /java/jdk/bin/java -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/java/tomcat/common/endorsed -classpath :/java/tomcat/bin/bootstrap.jar:/java/tomcat/bin/commons-logging-api.jar -Dcatalina.base=/java/tomcat -Dcatalina.home=/java/tomcat -Djava.io.tmpdir=/java/tomcat/temp org.apache.catalina.startup.Bootstrap start 
+		则 1540 就为进程号 pid = 1540，然后就可以kill这个进程:kill -9 1540
+		对比Windows下tasklist命令：tasklist | findstr tomcat，taskkill -f -pid 5144
+  19，telnet-->测试远程端口是否连通
+		telnet 10.4.200.114 1433
+		①端口通畅的情况
+		Trying 10.4.200.114...
+		Connected to 10.4.200.114 (10.4.200.114).
+		Escape character is '^]'.
+		②端口不通的情况
+		Trying 10.4.200.114...
+		如果能ping通，但端口不通，说明有可能被防火墙禁用了该端口，解决办法：
+		linux下：查看防火墙：iptables –L
+		即时生效，重启后失效 (开启： service iptables start ，关闭： service iptables stop )
+		设置防火墙：setup (乱码)  解决Putty工具乱码：查看Linux系统当中使用的字符集echo $LANG $LANGUAGE，选择菜修改设置(change settings)--->转换(translation)-->选utf-8-->应用(apply)
+		win7下防火墙开放端口方法：控制面板--系统和安全---windows防火墙---高级设置--入站规则--新建规则-->添加1433端口。
+  20，df -->查看磁盘空间（diskfree）
+		df -lh /usr/local
+  21，du-->查看已使用空间（diskused）
+		du -h /usr
+		du -h --max-depth=1  查看文件夹大小
+  22，top-->Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器
+		top -s 查看内存使用情况
+		top -s | grep java 查看java进程的信息
+
+  23，Linux压缩与解压缩
+		1,tar.gz这种格式是Linux下使用得最多的压缩格式。它在压缩时不会占用太多CPU的，而且可以得到一个非常理想的压缩率。
+			tar -zcvf archive_name.tar.gz directory_to_compress -->压缩一个目录
+			tar -zxvf archive_name.tar.gz  -->解压缩到当前目录下
+			tar -zxvf archive_name.tar.gz -C /usr/temp/ -->解压缩到指定目录下
+			参数解释：
+			-z  -gzip 调用gzip对tar归档文件进一步压缩成tar.gz格式,或者对tar.gz格式完成解压缩
+			-x  -extract 解压缩已归档的指定（或所有）文件
+			-c  -create 创建新的归档文件
+			-v  -verbose 生成详细输出
+			-f  -file 指定归档文件名
+			-r  向归档文件末尾追加文件
+			-C 改变目录
+
+		2,压缩/解压zip格式
+			zip file.zip ./directory/* -->压缩指定目录下的所有文件及目录
+			unzip file.zip -d ./test -->解压缩到指定目录
+			unzip file.zip -->解压缩到当前目录
+			unzip -v largefile.zip -->只查看压缩包的内容,并不解压缩
+
+三:	Linux与Windows的几点区别：
+		echo $PATH 回显Linux环境变量PATH的值,Linux下的环境变量必须大写
+		echo %path% 回显Windows环境变量path的值
+
+		export PATH=/usr/local/tomcat 修改设置Linux环境变量PATH的值(临时),Linux文件系统路径是斜杠
+		set path=D:\Program Files\tomcat 修改Windows环境变量path的值(临时)，Windows文件系统路径是反斜杠
+
+		Linux:查看、修改Linux下的用户级初始文件(.bash_profile),它是个隐藏文件（永久）
+		Windows:计算机-->属性-->高级-->环境变量,查看、修改环境变量（永久）
+
+		Linux命令搜索用grep,例如netstat -anp|grep 8080 
+		Windows Dos命令搜索用findstr,例如netstat -anp|findstr 8080
+
+		Linux下Tomcat的启动、关闭、杀死进程
+
+		打开终端
+		cd /java/tomcat
+		#执行
+		bin/startup.sh #启动tomcat
+		bin/shutdown.sh #停止tomcat
+		tail -f logs/catalina.out #看tomcat的控制台输出；
+		 
+		#看是否已经有tomcat在运行了
+		ps -ef |grep tomcat
+		#如果有，用kill;
+		kill -9 pid #pid 为相应的进程号
+		 
+		例如 ps -ef |grep tomcat 输出如下
+		sun 5144 1 0 10:21 pts/1 00:00:06 /java/jdk/bin/java -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/java/tomcat/common/endorsed -classpath :/java/tomcat/bin/bootstrap.jar:/java/tomcat/bin/commons-logging-api.jar -Dcatalina.base=/java/tomcat -Dcatalina.home=/java/tomcat -Djava.io.tmpdir=/java/tomcat/temp org.apache.catalina.startup.Bootstrap start
+		 
+		则 5144 就为进程号 pid = 5144
+		kill -9 5144 就可以彻底杀死tomcat
+ 
+		#直接查看指定端口的进程pid
+		netstat -anp|grep 9217
+		#结果为 tcp        0      0 :::9217                     :::*                        LISTEN      26127/java
+		#则26127为9217这个端口的tomcat进程的pid,然后就可以kill这个进程
+		kill -9 26127
+		#然后再启动tomcat即可
+		
+											linux下使用yum方式下载软件
+1.	先查看yum下有什么软件包：	yum list 
+2.	再具体查看某个软件的版本： 如 yum list | grep jdk
+3.  linux drwxr-xr-x 什么意思???
+		第一位表示文件类型。d是目录文件，l是链接文件，-是普通文件，p是管道
+		第2-4位表示这个文件的属主拥有的权限，r是读，w是写，x是执行。
+		第5-7位表示和这个文件属主所在同一个组的用户所具有的权限。
+		第8-10位表示其他用户所具有的权限。
+		如：
+		drwxr-xr-x   user1  group1       filename
+		表示filename是个目录，user1拥有读写执行的权限，和user1所在同一个group1组里的用户拥有只读和执行权限，
+		剩下其他用户拥有只读和执行权限
+4.  在linux上查看是否安装某软件：rpm -aq | grep 【name】
+5.	重命名一个文件：  mv mysql-5.7.21-linux-glibc2.12-x86_64  mysql_5.7.21 
+6.	Linux删除文件夹命令--rm, rmdir
+
+		linux删除目录很简单，很多人还是习惯用rmdir，不过一旦目录非空，
+
+		就陷入深深的苦恼之中，现在使用rm -rf命令即可。
+		直接rm就可以了，不过要加两个参数-rf
+
+		即：rm -rf 目录名字
+		-r 就是向下递归，不管有多少级目录，一并删除
+		-f 就是直接强行删除，不作任何提示的意思
+
+		删除文件夹实例：
+
+		#rm -rf /opt/real/RealPlayer
+
+		将会删除/opt/real/RealPlayer目录以及其下所有文件、文件夹
+
+		需要提醒的是：使用这个rm -rf的时候一定要格外小心，linux没有回收站的
+
+		当然，rm还有更多的其他参数和用法，man rm就可以查看了
+
+		删除文件使用实例：
+
+		rm -f /var/log/httpd/access.log
+
+		将会强制删除/var/log/httpd/access.log这个文件
+
+	
+	
+	
+
+

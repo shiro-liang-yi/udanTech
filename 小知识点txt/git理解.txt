@@ -1,0 +1,9 @@
+1.git remote 是查看当前配置有哪些远程仓库；执行时加上 -v 参数，你还可以看到每个别名的实际链接地址
+2.git fetch 与 git pull 这两个操作是针对分支的操作，前者是从远程仓库下载新分支与数据，该命令执行完毕后需要执行git merge远程分支到你所在的分支
+	后者是从远程仓库提取数据并合并到当前分支
+3.git push [alias] [branch] 推送你的分支【branch】到 起别名【alias】的这个远程仓库的【branch】分支上
+4.git remote rm [别名] 删除远程仓库
+5.git clone [url] 拷贝一个git仓库到本地，注意操作对象是远程的仓库，而不只是代码
+	例如： $ git clone git://github.com/schacon/simplegit.git
+6.git tag v1.0 添加一个标签
+7.这样只是在本地有了一个tag了，但是github上面还是没有；需要这样做:git push origin master --tags 才会出现在github上

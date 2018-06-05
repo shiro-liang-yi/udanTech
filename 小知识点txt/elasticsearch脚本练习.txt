@@ -1,0 +1,180 @@
+
+
+GET /megacorp/employee/_search
+{
+    "query" : {
+        "bool" : {
+          
+            "filter" : {
+                "range" : {
+                    "age" : { "gt" : 30 } 
+                }
+             
+            }
+        }
+    }
+}
+
+get /my_index/my_type/_search
+{
+	"query":{
+		"bool":{
+			"must":{"match":{"title:"quick"}},
+			"must_not":{},
+			"should":{}
+		}
+	}
+}
+
+
+//带映射结构的创建索引树状结构
+curl -XPUT [address]/path -d '{
+
+         "settings":{
+                   //定义一个路径分析器
+                   "index":{
+                            "analysis":{
+                                     "analyzer":{
+                                              "path_analyzer":{"tokenizer":"path_hierarchy"}
+                                    }
+                            }
+                   }
+         },
+         "mappings":{
+                   "category":{
+                            "properties":{
+                                     "category":{
+                                               "type":"string",            
+                                               "fields":{
+                                                        //定义多字段对象，使用category.path进行查询时将启用路径分析匹配指定路径下的所有文档，使用category.name进行查询时将精确匹配指定路径的文档，略过结构更深的文档。
+                                                        "name":{"type":"keyword","index":"not_analyzed"},
+                                                        "path":{"type":"keyword","analyzer":"path_analyzer","store":true}，
+							"time":{"type":"timestamp"}
+                                               }
+                                     }
+                            }
+                   }
+         }
+}'
+
+
+
+//创建一个mapping映射的索引库index_batt_history
+PUT index_batt_history 
+{
+  "mappings": {
+    "type_batt_history":{
+      "properties": {
+        "hwid":{"type": "keyword"},
+        "soc": {"type": "half_float"},
+        "soc_real": {"type": "half_float"},
+        "soh": {"type": "half_float"},
+        "tv": {"type": "half_float"},
+        "tc": {"type": "half_float"},
+        "pos_insulation": {"type": "integer"},
+        "neg_insulation": {"type": "integer"},
+        "sys_insulation": {"type": "integer"},
+        "sys_time": {"type": "date", "format": "yyyy-MM-dd HH:mm:ss"},
+        "sys_status": {"type": "integer"},
+        "max_volt": {"type": "half_float"},
+        "max_vold_code": {"type": "integer"},
+        "max_vold_id": {"type": "integer"},
+        "min_volt": {"type": "half_float"},
+        "min_volt_code": {"type": "integer"},
+        "min_volt_id": {"type": "integer"},
+        "max_tempr": {"type": "integer"},
+        "max_tempr_code": {"type": "integer"},
+        "max_tempr_id": {"type": "integer"},
+        "min_tempr": {"type": "integer"},
+        "min_tempr_code": {"type": "integer"},
+        "min_tempr_id": {"type": "integer"},
+        "lgt": {"type": "float"},
+        "lat": {"type": "float"},
+        "lac": {"type": "integer"},
+        "cid": {"type": "integer"},
+        "error_rate": {"type": "integer"},
+        "signal_strength": {"type": "integer"},
+        "update_time": {"type": "date", "format": "yyyy-MM-dd HH:mm:ss"},
+        "relay_status": {"type": "text"},
+        "carrier_name": {"type": "integer"},
+        "ccid": {"type": "keyword"},
+        "batt_num": {"type": "integer"},
+        "voltage": {"type": "text"},
+        "tempr_num": {"type": "integer"},
+        "temperature": {"type": "text"},
+        "charging_state": {"type": "integer"},
+        "charging_duration": {"type": "integer"},
+        "charging_output_volt": {"type": "half_float"},
+        "charging_output_curr": {"type": "half_float"},
+        "charging_fault_state": {"type": "integer"},
+        "charging_s2": {"type": "integer"},
+        "cc": {"type": "integer"},
+        "cc2": {"type": "integer"},
+        "cp": {"type": "integer"},
+        "cp_duty": {"type": "half_float"},
+        "electric_lock": {"type": "integer"},
+        "charging_tempr": {"type": "text"},
+        "balancing_count": {"type": "integer"},
+        "balancing": {"type": "text"},
+        "server_time": {"type": "date", "format": "yyyy-MM-dd HH:mm:ss"}
+      }
+    }
+  }
+}
+
+//给索引库index_batt_history插入数据脚本
+POST /index_batt_history/type_batt_history 
+{
+	"hwid":"张三",
+        "soc": 20.132,
+        "soc_real": 1.3,
+        "soh": 1.4,
+        "tv": 1.1,
+        "tc": 1.987,
+        "pos_insulation": 0,
+        "neg_insulation": 1,
+        "sys_insulation": 2,
+        "sys_time": "1999-12-31 23:59:59",
+        "sys_status": 3,
+        "max_volt": 1.5321,
+        "max_vold_code": 4,
+        "max_vold_id": 5,
+        "min_volt": 9.214,
+        "min_volt_code": 6,
+        "min_volt_id": 7,
+        "max_tempr": 8,
+        "max_tempr_code": 9,
+        "max_tempr_id": 10,
+        "min_tempr": 11,
+        "min_tempr_code": 12,
+        "min_tempr_id": 13,
+        "lgt": 1.11,
+        "lat": 1.12,
+        "lac": 14,
+        "cid": 15,
+        "error_rate": 16,
+        "signal_strength": 17,
+        "update_time": "2000-01-01 01:00:00",
+        "relay_status": "世界步入了21世纪，走向了新的纪元",
+        "carrier_name": 18,
+        "ccid": "然而并没有什么喜人的变化",
+        "batt_num": 19,
+        "voltage": "abcd",
+        "tempr_num": 20,
+        "temperature": "咳嗽",
+        "charging_state": 21,
+        "charging_duration": 22,
+        "charging_output_volt": 1.23,
+        "charging_output_curr": 1.24,
+        "charging_fault_state": 23,
+        "charging_s2": 24,
+        "cc": 25,
+        "cc2": 26,
+        "cp": 27,
+        "cp_duty": 1.25,
+        "electric_lock": 28,
+        "charging_tempr": "喉咙疼",
+        "balancing_count": 29,
+        "balancing": "头痛",
+        "server_time": "2018-04-16 17:23:33"
+}

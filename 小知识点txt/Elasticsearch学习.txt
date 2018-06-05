@@ -1,0 +1,28 @@
+1. es是基于rest（representative state transfer表现层数据状态转移）风格的设计
+2. es内置的rest接口：
+	/index/_search	搜索指定索引下的资源
+	/_aliases	获取或操作索引的别名
+	/index/		查看指定索引的详细信息
+	/index/type/	创建或操作类型
+	/index/_mapping	创建或操作mapping
+	/index/_settings创建或操作设置（number_of_shards是不可更改的）
+	/index/_open    打开指定被关闭的索引
+	/index/_close   关闭指定索引
+	/index/_refresh 刷新索引（使新加内容对搜索可见，不保证数据被写入磁盘）
+	/index/_flush   刷新索引（会触发lucene提交）
+3. es 和 关系型数据库的数据对比
+	database（数据库）	index（索引库）
+	table（表）		type（类型）
+	row（行）		document（文档）
+	column（列）		field（字段）
+4. rest的操作分为一下几种：
+	-GET：获取对象的当前状态
+	-PUT：改变当前的状态
+	-POST：创建对象
+	-DELETE：删除对象
+	-HEAD：获取头信息
+5. 启动Es， $ .bin/elasticsearch-6.2.3 -d（在后台运行）
+6. 索引库名称必须要全部小写，不能以下划线等开头，也不能包含逗号
+7. 之所以会有curl等这些命令行操作，是又下载了两个插件
+8.
+	

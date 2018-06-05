@@ -1,0 +1,85 @@
+1. git的学习
+	.git下面的config文件
+	{
+
+		[core]
+	repositoryformatversion = 0
+	
+		filemode = false
+	
+		bare = false
+	
+		logallrefupdates = true
+	symlinks = false
+	
+		ignorecase = false
+[remote "b"]
+	
+		url = git@github.com:shiro-liang-yi/udanTech.git
+	
+		fetch = +refs/heads/*:refs/remotes/b/*
+[remote "origin"]
+	
+		url = git@github.com:shiro-liang-yi/udanTech.git
+	
+		fetch = +refs/heads/*:refs/remotes/origin/*
+
+	}
+
+2. linux的学习
+2018/04/17星期二
+1.我们的代码托管服务器地址：https://gitlab.udantech.com/
+2.用户名:shuai.liang
+3.密码: 是我常用的那个密码
+2018/04/18星期三
+1。安装webstorm
+2。安装node.js
+3。安装nwjs
+4。安装vue.js
+
+
+C:\ProgramData\Oracle\Java\javapath;
+  %SystemRoot%\system32;
+  %SystemRoot%;
+  %SystemRoot%\System32\Wbem;
+  %SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;
+  C:\Program Files\TortoiseGit\bin;
+  %JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+  %CATALINA_HOME%\bin;
+  C:\Program Files\Git\cmd;%MAVEN_HOME%\bin;
+  C:\Program Files\nodejs\;
+
+
+  --------------------------------------
+
+
+JAVA_HOME
+C:\Program Files (x86)\Java\jdk1.8.0_144
+
+Path
+C:\ProgramData\Oracle\Java\javapath;;%TOMCAT_HOME%\bin;%CATALINA_HOME%\lib;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+
+TOMCAT_HOME
+D:\uDan_software_computer\tomcat\apache-tomcat-9.0.6
+
+CATALINA_HOME
+D:\uDan_software_computer\tomcat\apache-tomcat-9.0.6
+
+CLASSPATH
+ .;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar
+
+
+
+ 【问题】：tomcat的自动化启动配置还是有问题，未解决
+
+
+
+ 2018/04/24
+ 包装扫码工具：
+ 1）支持上一工序校验是指订单编号--包装条码--产品条码之间顺序的支持吗？
+ 2）支持重复扫码是指不用校验码值，也不给出提示，只要有输入就存进去是吗？
+ 3）对于重复扫码的记录显示要求是？
+ 
+
+
+

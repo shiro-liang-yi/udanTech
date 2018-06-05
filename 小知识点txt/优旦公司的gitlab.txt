@@ -1,0 +1,4 @@
+1.包装扫码项目的git仓库在：D:\udan-gitlab-project\packageScan-project-git-respository\packageScan
+2.注意、一个项目一定要从始至终都在一个固定的目录下面，不要老师更换git仓库的位置，会提交失败，而且到最后自己都没无法跟踪项目的进展了，切记
+3.以后所有的公司项目仓库都放在：D:\udan-project\packageScan-project-git-respository下面
+4.仓库不要放在 c 系统盘符下面，一旦重装系统什么都没了

@@ -1,0 +1,26 @@
+这是【linux】上安装的mysql
+注意：MySQL的validate_password插件是默认安装的。
+这要求MySQL密码至少包含一个大写字母、一个小写字母、一个数字和一个特殊字符，并且总密码长度至少为8个字符。
+1. newpassword：AaBbCc01)
+2. 默认只允许root账户在本地登录，如果要在其他机器上链接mysql，必须添加
+	一个允许远程连接的账户：
+	GRANT ALL PRIVILEGES ON *.* TO 'liangshuai'@'%' IDENTIFIED BY 'Liangshuai2018)' WITH GRANT OPTION;
+
+
+==============================================================================
+本地访问linux上的内网mysql服务
+mysql -h 172.17.0.4 -u root -p
+‘-h’表示 host参数
+密码：udan123456
+一般提示 no commond mysql等等，表明需要安装mysql（centos上的包管理程序是 yum）
+
+================================================================================
+【windows】上忘记root密码怎么办？？？
+1. 修改mysql.ini配置文件：在最下面添加一行，skip_grant_tables
+2. 然后在docs中，输入 mysql -u root -p   【注意，可能需要你进入到bin目录下】，然后直接回车即可
+3. 登陆后，切换到mysql库 ： use mysql
+4. 修改密码：update user set password = '目标密码' where user = 'root' 即可
+5. 注意中间可能需要关闭mysql服务
+
+
+如果在服务中没有找到mysql服务：进入到mysql的安装bin目录下，以管理员身份运行docs，执行 mysqld.exe -install 即可
