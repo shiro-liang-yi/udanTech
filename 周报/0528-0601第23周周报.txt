@@ -1,0 +1,7 @@
+1.用maven构建web-A1项目
+2.ssh端口的转发
+3.熟悉web-A1项目
+4.项目启动后账号：udan@ievcloud.com
+	密码：123456
+5.打包包装扫码上线版
+6.maven通过nexus搭建了一个私服

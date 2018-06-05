@@ -1,0 +1,3 @@
+周报：
+1.本周学习了elasticsearch的dsl查询语言
+2.node.js的回调函数，事件循环，EventEmitter，Buffer，Stream
