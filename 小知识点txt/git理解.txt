@@ -7,3 +7,7 @@
 	例如： $ git clone git://github.com/schacon/simplegit.git
 6.git tag v1.0 添加一个标签
 7.这样只是在本地有了一个tag了，但是github上面还是没有；需要这样做:git push origin master --tags 才会出现在github上
+8.git checkout -b dev命令相当于以下两条命令的合并(创建分支并切换到分支上)
+	git branch dev
+	git checkout dev
+
