@@ -1,2 +1,4 @@
 1.继续学习nutz框架:dao、At，Ok等配置
 2.nutz验证码的配置
+3.理解Nutz Mvc的主模块、入口函数
+4.理解Nutz Mvc的url映射原理
