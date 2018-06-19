@@ -2,3 +2,4 @@
 2.nutz验证码的配置
 3.理解Nutz Mvc的主模块、入口函数
 4.理解Nutz Mvc的url映射原理
+5.nutz动作链、适配器

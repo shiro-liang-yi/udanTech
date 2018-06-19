@@ -1,0 +1,2 @@
+1.学习nutz的响应视图，jsp、json、空白、http等
+
