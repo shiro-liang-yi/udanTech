@@ -1,0 +1,4 @@
+1. 首先我们在创建时，需要选择maven的模板选项，然后选择旗下的org.maven.architche的那个webapp【切记不是coonoo的那个】
+2. 当我们创建好maven web工程后，需要我们手动来创建java、resources这两个目录但是这时一旦创建了这两个目录后，会发现，在java目录下的包中新建是没有java
+class选项的，这时不要着急，是因为project Structure的问题；因此我们接下来就是要解决这个问题的，默认是将src设置为根目录的，我们只需要把java设置为Source Folders即可
+3. 注意，设置为根目录的目录会显示为天蓝色的颜色
