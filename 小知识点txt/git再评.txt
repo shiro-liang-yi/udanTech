@@ -1,0 +1,139 @@
+用户信息
+	配置时如果加上--global参数，配置文件就保存在用户主目录下面
+	.gitconfig文件中,以后所有项目都会默认使用这里的配置；如果没有添加--global参数，配置文件就保存在当前项目的.gitconfig文件里
+文本编辑器
+	设置Git默认使用的文本编辑器，一般使用vi或者vim。如果你有其它偏好，比如Emacs的话，可以重新设置：
+	$ git config --global core.editor emacs
+差异分析工具
+	还有一个比较常用的是，在解决合并冲突时使用那种差异分析工具，比如要改用vimdiff的话：
+	$ git config --global merge.tool vimdiff
+	Git可以理解kdiff3、tkdiff、meld、xxdiff、emerge、vimdiff、gvimdiff、ecmerge、和opendiff等合并工具的输出信息
+查看配置信息
+	要检查已有的所配置信息，可以使用git config --list命令：
+	$ git config --list
+	有时候会看到重复的变量名，那就说明它们来自不同的配置文件(比如/etc/gitconfig和~/.gitconfig)，不过最终Git实际采用的是最后一个
+Git创建仓库
+	使用你当前目录作为Git仓库，我们只需要使它初始化即可
+		$ git init
+	使用我们指定的目录作为Git仓库
+		$ git init C:\feiqiu
+	初始化后，在当前目录下会出现一个名为.git的目录，所有Git需要的数据和
+	资源都存放在这个目录中
+	如果当前目录下有几个文件想要纳入版本控制，需要先用git add
+	命令告诉Git开始对这些文件进行跟踪，然后提交
+		$ git add *.c
+		$ git add README
+		$ git commit -m 'mm'
+从现有仓库克隆
+	仓库克隆的命令的格式为：
+		$ git clone [url]
+	比如，要克隆Ruby语言的git代码仓库Grit，可以用下面的命令：
+		$ git clone git://github.com/schacon/grit.git
+	执行该命令后，会在当前目录下创建一个名为grit的目录，其中包含一个.git
+	的目录，用于保存下载下来的所有版本记录
+	如果想要自己定义要新建的项目目录名称，可以在上面的命令末尾指定新的名
+	字：
+		$ git clone git://github.com/schacon/grit.git mygrit
+Git工作区、暂存区和版本库
+	工作区：就是你在电脑里能看到的目录
+	暂存区：英文叫stage或index，一般存放在"git目录"下的index文件（.git/index）中，所以我们把暂存区有时也叫做索引（index）
+	版本库：工作区有一个隐藏目录git，这个不算工作区，而是Git的版本库
+	在对工作区执行git add时，暂存区的目录树被更新，同时工作区修改的文件内容被写入到对象库中的一个新的对象中，而该对象的id被记录在暂存区的文件索引中。
+	当执行提交操作时（git commit），暂存区的目录树写到版本库（对象库）中
+	当执行"git rm --cached <>"命令时，会直接从暂存区删除文件，工作区不做出改变
+基本操作
+	使用 git status 时，想要获得简短的输出结果，可以用：
+		git status -s
+	git diff：显示已经写入缓存（暂存区）与已经修改但尚未写入缓存的改动的区别，git diff主要有两个应用场景：
+		尚未缓存的改动（即工作区与暂存区的diff）：git diff
+		查看已经缓存的改动：git diff --cached
+		查看已经缓存的与未缓存的所有改动（其实是与版本库比较）：git diff HEAD
+		显示摘要而非整个diff：git diff --stat
+	git reset HEAD：该命令用于取消缓存已经缓存的内容，后面可以直接跟参数,表示对某个文件取消缓存
+	git rm将文件从缓存区中移除，默认情况下，git rm file会将文件从缓存区和你的硬盘中（工作区）删除，如果要在工作目录中留着该文件，可以使用命令：git rm --cached
+	git mv命令做的事情就是git rm --cached，重命名磁盘上的文件，然后执行git add把新文件添加到缓存区
+分支管理
+	当你切换分支的时候，Git会用该分支的最后提交的快照替换你的工作目录的内容，所以多个分支不需要多个目录
+	合并分支：git merge
+	列出分支：git branch，当你执行git init时，缺省情况下Git就会为你创建master分支
+	git checkout -b dev创建新分支dev并立即切换到该分支下
+	git branch -d dev 强制删除使用 -D
+查看提交历史
+	git log
+	我们可以使用--oneline参数来查看历史记录的简洁版本: git log --oneline --graph参数，查看历史中什么时候出现了分支、合并。执行该命令后默认会开启拓扑图选项显示：
+		git log --oneline --graph
+	--reverse参数，来逆向显示所有日志：
+		git log --oneline --reverse
+	-p 会输出详细信息： git log -p
+	如果你想查找指定的用户提交的历史：git log --author="zhangsan"
+	如果你要指定日期，可以执行几个参数：--since和--before，但是你也可以
+	使用--until和--after：
+		例如我想要查看Git项目中三周前且在四月十八日之后的所有提交，
+		可以执行这个（我还用了--no-merges选项以隐藏合并提交）:
+		git log --oneline --before={3.weeks.ago} --after={2010-04-18} --no-merges 
+Git标签
+	如果你打到一个重要的阶段，并希望永远记住那个特别的提交快照，你可以使用git tag给它打上标签
+	git tag -a v1.0
+	-a选项意为创建一个带注解的标签，不用-a参数也是可以的，但是它不会记录
+	这标签是啥时候打的，谁打的，也不会让你添加个标签的注解，
+	当你执行git tag
+	-a命令时，Git会打开你的编辑器，让你写一句标签注解，就像你给提交写注
+	解一样；当我们写上标签后，使用 git log --oneline --decorate --graph
+	时，我们就可以看到我们的标签了
+远程仓库
+	Git并不像SVN那样有个中心服务器，如果你想通过Git分享你的代码与他人合
+	作开发，你就需要将数据放到一台其他开发人员可以连接到的服务器上
+	这里以GitHub作为远程仓库（你可以自己选择）
+	添加远程库
+		git remote add [给远端仓库起的名字] [url]
+	查看当前项目的远端仓库
+		git remote -v
+	提取远程仓库
+		Git有两个命令用来提取远程仓库的更新
+		从远程仓库下载新分支与数据
+			git fetch origin
+			该命令执行完后需要执行git merge远程分支到你所在的分支
+		从远程仓库提取数据并尝试合并到当前分支
+			git pull
+			该命令就是在执行git fetch之后紧接着执行git merge远程分支到你所在的任意分支
+	推送到远程仓库
+		git push [alias] [branch]
+		以上命令将你的[branch]分支推送成为[alias]远程仓库上的[branch]分支
+	删除远程仓库
+		git remote rm [远程仓库起的别名]
+Git服务器搭建
+	我们前面是用的是GitHub，GitHub公开的项目是免费的，但是如果你不想让其他人看到你的项目就需要收费，这时我们就需要自己搭建一台Git服务器作为私有仓库使用，接下来我们将以Centos为例搭建		一台Git服务器
+	1、安装git
+		$ yum install curl-devel expat gettext-devel openssl-devel
+		zlib-devel perl-devel
+		$yum install git
+		接下来我们创建一个git用户组和用户，用来运行git服务
+		$ groupadd git
+		$ adduser git -g git
+	2、创建证书登录
+	3、初始化Git仓库
+		首先我们选定一个目录作为Git仓库，假定是/home/gitrepo/shouce.rencc.git，在/home/gitrepo目录下输入命令：
+		$ cd /home
+		$ mkdir gitrepo
+		$ chown git:git gitrepo/
+		$ cd gitrepo
+		$ git init --bare shouce.rencc.git
+	4、克隆仓库
+		$ git clone git@192.168.45.4:/home/gitrepo/shouce.rencc.git
+		192.168.45.4为Git所在服务器IP，修改成自己的即可
+		接下来我们可以禁用git用户通过shell登录，可以通过编辑/etc/passwd文件完成，找到类似下面的一行：
+		git:x:503:503::/home/git:/bin/bash
+		修改为：
+		git:x:503:503::/home/git:/sbin/nologin
+
+
+【--Author：liangshuai】
+
+
+
+
+	
+
+		
+	
+

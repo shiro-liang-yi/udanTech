@@ -66,5 +66,9 @@ NewChargingInfo  0x93 新版兼容ChargingInfo 充电状态下周期发送
 
 a.getInt().toUInt()类似
 
+##### 可能是0x93匹配出错
+
+在解析第24位时，出错， 9a错误的解析成了124    9a应该是154
+
 [^author：梁帅]: 
 
